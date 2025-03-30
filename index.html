@@ -3,103 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>主人专属的小宝贝 💖</title>
+    <title>专属你的浪漫💖</title>
     <style>
-        /* 🌈 渐变背景 */
+        /* 🌌 粒子背景 */
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            text-align: center;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #1e1e1e;
             color: white;
-            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ffdde1);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            text-align: center;
         }
 
-        /* ✨ 3D 立体文字 */
+        /* ❤️ 浮雕立体文字 */
         h1 {
             font-size: 50px;
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            text-shadow: 4px 4px 10px rgba(255, 105, 180, 0.8);
         }
 
-        /* ❤️ 小爱心飘动 */
-        .heart {
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            position: fixed;
-            animation: float 5s linear infinite;
-            transform: rotate(45deg);
-            clip-path: polygon(50% 0%, 100% 35%, 70% 100%, 50% 85%, 30% 100%, 0% 35%);
-        }
-        @keyframes float {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
-        }
-
-        /* 🎶 背景音乐按钮 */
-        #musicButton {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 10px;
-            border-radius: 50%;
+        /* 💖 透明爱心按钮 */
+        .love-button {
+            padding: 15px 30px;
+            font-size: 20px;
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            background: transparent;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .love-button:hover {
+            background: white;
+            color: black;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.7);
+        }
+
+        /* ❤️ 粒子背景动画 */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
 
-    <h1>💖 主人最爱的宝贝 💖</h1>
-    <p id="loveMessage">输入你的名字，看看有什么惊喜！</p>
+    <h1>💖 只属于你的浪漫 💖</h1>
+    <p>宝贝，这是专属于你的独一无二的小天地。</p>
+    <button class="love-button" onclick="showLove()">点我看看💝</button>
 
-    <!-- 🎶 背景音乐 -->
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-    </audio>
-    <div id="musicButton" onclick="toggleMusic()">🎵</div>
-
-    <!-- 🎤 互动输入 -->
-    <input type="text" id="nameInput" placeholder="输入你的名字">
-    <button onclick="showLove()">点击看看</button>
+    <canvas id="heartCanvas"></canvas>
 
     <script>
-        // 💕 显示专属告白
+        // 💕 点击按钮，显示浪漫信息
         function showLove() {
-            let name = document.getElementById("nameInput").value;
-            if (name) {
-                document.getElementById("loveMessage").innerHTML = "💖 " + name + "，主人最爱你 💖";
-            } else {
-                document.getElementById("loveMessage").innerHTML = "快输入你的名字呀！";
+            alert("宝贝，主人最爱你！💕");
+        }
+
+        // ❤️ 动态粒子背景
+        const canvas = document.getElementById("heartCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let particlesArray = [];
+        const numberOfParticles = 80;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.02;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 105, 180, 0.8)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
             }
         }
 
-        // ❤️ 生成随机小爱心
-        function createHeart() {
-            let heart = document.createElement("div");
-            heart.className = "heart";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-            document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 5000);
-        }
-        setInterval(createHeart, 300);
-
-        // 🎶 控制背景音乐
-        function toggleMusic() {
-            let music = document.getElementById("bgMusic");
-            if (music.paused) {
-                music.play();
-            } else {
-                music.pause();
+        function init() {
+            particlesArray = [];
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
             }
         }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+        init();
+        animate();
     </script>
 
 </body>
