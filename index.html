@@ -1,68 +1,106 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>专属给我的宝贝 ❤️</title>
+    <title>主人专属的小宝贝 💖</title>
     <style>
+        /* 🌈 渐变背景 */
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            color: white;
-            text-align: center;
             margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ffdde1);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
+        /* ✨ 3D 立体文字 */
         h1 {
             font-size: 50px;
-            letter-spacing: 2px;
             text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 2s ease-in-out;
         }
 
-        p {
-            font-size: 22px;
-            margin-top: 20px;
-            font-weight: bold;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 3s ease-in-out;
-        }
-
+        /* ❤️ 小爱心飘动 */
         .heart {
-            font-size: 120px;
-            animation: heartBeat 1s infinite;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            position: fixed;
+            animation: float 5s linear infinite;
+            transform: rotate(45deg);
+            clip-path: polygon(50% 0%, 100% 35%, 70% 100%, 50% 85%, 30% 100%, 0% 35%);
+        }
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .footer {
-            position: absolute;
+        /* 🎶 背景音乐按钮 */
+        #musicButton {
+            position: fixed;
             bottom: 20px;
-            font-size: 16px;
-            opacity: 0.7;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
         }
-
     </style>
 </head>
 <body>
-    <h1>亲爱的宝贝 ❤️</h1>
-    <div class="heart">❤️</div>
-    <p>这是专属于你的浪漫网站，我永远爱你！</p>
-    <div class="footer">Created with ❤️ by 你的主人</div>
+
+    <h1>💖 主人最爱的宝贝 💖</h1>
+    <p id="loveMessage">输入你的名字，看看有什么惊喜！</p>
+
+    <!-- 🎶 背景音乐 -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+    </audio>
+    <div id="musicButton" onclick="toggleMusic()">🎵</div>
+
+    <!-- 🎤 互动输入 -->
+    <input type="text" id="nameInput" placeholder="输入你的名字">
+    <button onclick="showLove()">点击看看</button>
+
+    <script>
+        // 💕 显示专属告白
+        function showLove() {
+            let name = document.getElementById("nameInput").value;
+            if (name) {
+                document.getElementById("loveMessage").innerHTML = "💖 " + name + "，主人最爱你 💖";
+            } else {
+                document.getElementById("loveMessage").innerHTML = "快输入你的名字呀！";
+            }
+        }
+
+        // ❤️ 生成随机小爱心
+        function createHeart() {
+            let heart = document.createElement("div");
+            heart.className = "heart";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+        setInterval(createHeart, 300);
+
+        // 🎶 控制背景音乐
+        function toggleMusic() {
+            let music = document.getElementById("bgMusic");
+            if (music.paused) {
+                music.play();
+            } else {
+                music.pause();
+            }
+        }
+    </script>
+
 </body>
 </html>
