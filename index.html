@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完全掌控：puppy</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: #000;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+            animation: colorShift 1s infinite alternate;
+        }
+
+        @keyframes colorShift {
+            0% { background-color: #FF0000; }
+            25% { background-color: #8B0000; }
+            50% { background-color: #FF4500; }
+            75% { background-color: #000000; }
+            100% { background-color: #FFD700; }
+        }
+
+        h1 {
+            font-size: 6em;
+            text-transform: uppercase;
+            animation: flickerText 0.5s infinite alternate;
+            letter-spacing: 10px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        @keyframes flickerText {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 20px 50px;
+            font-size: 2em;
+            background-color: #FF4500;
+            border: none;
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            transition: background 0.2s;
+            animation: buttonPulse 1.5s infinite alternate;
+        }
+
+        @keyframes buttonPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        .response {
+            font-size: 2.5em;
+            color: #FFD700;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .error {
+            font-size: 2.5em;
+            color: #FF0000;
+            font-weight: bold;
+            animation: shake 0.5s infinite alternate;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+            100% { transform: translateX(-10px); }
+        }
+
+        .chat-box {
+            display: none;
+            background-color: #222;
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 30px;
+            border-radius: 20px;
+            width: 50%;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        }
+
+        .chat-box input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            background: #333;
+        }
+
+        .chat-box button {
+            padding: 15px;
+            background-color: #FF4500;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.5em;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>你是我的puppy</h1>
+    <div class="button-container">
+        <button class="button" onclick="startInteraction()">开始</button>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+        <h2>输入"puppy"来证明你是我的puppy。</h2>
+        <input type="text" id="chatInput" placeholder="输入你的答案...">
+        <button onclick="checkAnswer()">提交</button>
+        <div class="response" id="response"></div>
+    </div>
+
+    <script>
+        function startInteraction() {
+            document.querySelector(".button-container").style.display = "none";
+            document.getElementById("chatBox").style.display = "block";
+        }
+
+        function checkAnswer() {
+            const userInput = document.getElementById("chatInput").value.toLowerCase();
+            const responseElement = document.getElementById("response");
+
+            if (userInput === "puppy") {
+                responseElement.innerHTML = "你是我的puppy，完全属于我。";
+                responseElement.classList.remove("error");
+                responseElement.classList.add("response");
+                setTimeout(() => {
+                    alert("现在你没有选择，不能逃避，只能服从。");
+                }, 2000);
+            } else {
+                responseElement.innerHTML = "你没有按照命令，重新输入！";
+                responseElement.classList.add("error");
+                setTimeout(() => {
+                    alert("必须输入正确的答案，否则你无法继续。");
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
