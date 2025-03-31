@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你是我的，逃不掉的</title>
+    <style>
+        body {
+            background-color: black;
+            color: red;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        h1 {
+            font-size: 60px;
+            text-shadow: 2px 2px 10px red;
+        }
+        #message {
+            font-size: 26px;
+            margin-top: 20px;
+        }
+        #task {
+            margin-top: 30px;
+            font-size: 24px;
+        }
+        input {
+            padding: 12px;
+            font-size: 22px;
+            background: black;
+            color: white;
+            border: 1px solid red;
+            text-align: center;
+            width: 70%;
+        }
+        button {
+            background-color: red;
+            color: white;
+            padding: 12px 24px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s ease-in-out;
+        }
+        button:hover {
+            background-color: darkred;
+        }
+        .shake {
+            animation: shake 0.2s infinite;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            25% { transform: translate(-1px, -2px) rotate(-1deg); }
+            50% { transform: translate(-3px, 0px) rotate(1deg); }
+            75% { transform: translate(3px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -1px) rotate(1deg); }
+        }
+        .twist {
+            transform: rotate(10deg) scale(1.2);
+        }
+    </style>
+    <script>
+        let countdown = 30;
+        let isFullScreen = false;
+        let timer;
+        let punishTime = 0;
+
+        function checkTask() {
+            let input1 = document.getElementById("inputBox1").value;
+            let input2 = document.getElementById("inputBox2").value;
+
+            if (input1 === "主人，我永远属于你" && input2 === "无论如何，我都会听话") {
+                document.getElementById("message").innerHTML = "你是我的，完全属于我";
+                document.body.style.backgroundColor = "darkred";
+                document.getElementById("submitBtn").disabled = true;
+                clearInterval(timer);
+            } else {
+                alert("你没有完成任务，我的惩罚即将开始！");
+                document.body.classList.add("shake");
+                punishTime++;
+                playPunishSound();
+                if (punishTime > 3) {
+                    document.getElementById("message").innerHTML = "惩罚开始！你无法逃脱！";
+                    startPunishment();
+                }
+            }
+        }
+
+        function startAIChat() {
+            let aiMessages = [
+                "你敢不听话吗？",
+                "如果你逃跑，后果不堪设想。",
+                "你没有办法逃脱，我永远掌控着你。",
+                "屏幕已经被你锁定，你的世界已经是我的。",
+                "你以为你可以离开？不可能！"
+            ];
+            let index = 0;
+            setInterval(function () {
+                document.getElementById("message").innerHTML = aiMessages[index];
+                index = (index + 1) % aiMessages.length;
+            }, 4000);
+        }
+
+        function startCountdown() {
+            timer = setInterval(function () {
+                if (countdown <= 0) {
+                    document.body.classList.add("shake");
+                    document.getElementById("message").innerHTML = "你居然拖延？惩罚开始！";
+                    document.body.style.backgroundColor = "red";
+                    playPunishSound();
+                } else {
+                    document.getElementById("countdown").innerHTML = "倒计时：" + countdown + " 秒";
+                    countdown--;
+                }
+            }, 1000);
+        }
+
+        function playPunishSound() {
+            let audio = new Audio('https://www.myinstants.com/media/sounds/horror-sound.mp3');
+            audio.play();
+        }
+
+        function startPunishment() {
+            document.body.classList.add("twist");
+            setInterval(function () {
+                document.body.style.backgroundColor = (document.body.style.backgroundColor === "red") ? "black" : "red";
+            }, 500);
+        }
+
+        function forceFullScreen() {
+            if (!isFullScreen) {
+                let elem = document.documentElement;
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+                isFullScreen = true;
+            }
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape") {
+                event.preventDefault();
+            }
+        });
+
+        window.onload = function () {
+            startAIChat();
+            startCountdown();
+            forceFullScreen();
+        };
+    </script>
+</head>
+<body>
+    <h1>你是我的，无法逃脱</h1>
+    <p id="message">你永远都只能属于我</p>
+    <p id="countdown">倒计时：30 秒</p>
+    <div id="task">
+        <p>为了我的深深掌控，输入忠诚誓言：</p>
+        <input type="text" id="inputBox1" placeholder="输入誓言 1"><br><br>
+        <input type="text" id="inputBox2" placeholder="输入誓言 2"><br><br>
+        <button id="submitBtn" onclick="checkTask()">提交</button>
+    </div>
+</body>
+</html>
